@@ -114,6 +114,12 @@ func (s *DownloadService) Active() ([]string, error) {
 	return s.c.getStringSlice(downloadList, "active")
 }
 
+// BaseFilename retrieves the base filename shown in the rTorrent UI for a
+// specific download, by its info-hash.
+func (s *DownloadService) BaseFilename(infoHash string) (string, error) {
+	return s.c.getString("d.get_base_filename", infoHash)
+}
+
 // DownloadRate retrieves the current download rate in bytes for a specific
 // download, by its info-hash.
 func (s *DownloadService) DownloadRate(infoHash string) (int, error) {
@@ -134,6 +140,18 @@ func (c *Client) getInt(method string, arg string) (int, error) {
 	}
 
 	var v int
+	err := c.xrc.Call(method, send, &v)
+	return v, err
+}
+
+// getString retrieves a string value from the specified XML-RPC method.
+func (c *Client) getString(method string, arg string) (string, error) {
+	var send interface{}
+	if arg != "" {
+		send = arg
+	}
+
+	var v string
 	err := c.xrc.Call(method, send, &v)
 	return v, err
 }

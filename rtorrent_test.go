@@ -253,6 +253,24 @@ func TestClientDownloadsActive(t *testing.T) {
 	}
 }
 
+func TestClientDownloadsBaseFilename(t *testing.T) {
+	wantName := "foobar"
+	wantHash := strings.Repeat("A", 40)
+
+	c, done := testClient(t, "d.get_base_filename", []string{wantHash}, wantName)
+	defer done()
+
+	name, err := c.Downloads.BaseFilename(wantHash)
+	if err != nil {
+		t.Fatalf("failed call to Client.Downloads.BaseFilename: %v", err)
+	}
+
+	if want, got := wantName, name; !reflect.DeepEqual(want, got) {
+		t.Fatalf("unexpected name:\n- want: %v\n-  got: %v",
+			want, got)
+	}
+}
+
 func TestClientDownloadsDownloadRate(t *testing.T) {
 	wantRate := 1024
 	wantHash := strings.Repeat("A", 40)
@@ -350,6 +368,8 @@ func writeXMLRPC(w io.Writer, out interface{}) error {
 	switch out := out.(type) {
 	case int:
 		xw.Params[0].Param.Value.Int = out
+	case string:
+		xw.Params[0].Param.Value.String = out
 	case []string:
 		xw.Params[0].Param.Value.Array = new(xmlrpcArray)
 		xw.Params[0].Param.Value.Array.Data.Value = make([]xmlrpcArrayData, len(out))
