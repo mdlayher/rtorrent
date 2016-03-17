@@ -253,6 +253,42 @@ func TestClientDownloadsActive(t *testing.T) {
 	}
 }
 
+func TestClientDownloadsDownloadRate(t *testing.T) {
+	wantRate := 1024
+	wantHash := strings.Repeat("A", 40)
+
+	c, done := testClient(t, "d.get_down_rate", []string{wantHash}, wantRate)
+	defer done()
+
+	rate, err := c.Downloads.DownloadRate(wantHash)
+	if err != nil {
+		t.Fatalf("failed call to Client.Downloads.DownloadRate: %v", err)
+	}
+
+	if want, got := wantRate, rate; !reflect.DeepEqual(want, got) {
+		t.Fatalf("unexpected download rate:\n- want: %v\n-  got: %v",
+			want, got)
+	}
+}
+
+func TestClientDownloadsUploadRate(t *testing.T) {
+	wantRate := 1024
+	wantHash := strings.Repeat("A", 40)
+
+	c, done := testClient(t, "d.get_up_rate", []string{wantHash}, wantRate)
+	defer done()
+
+	rate, err := c.Downloads.UploadRate(wantHash)
+	if err != nil {
+		t.Fatalf("failed call to Client.Downloads.UploadRate: %v", err)
+	}
+
+	if want, got := wantRate, rate; !reflect.DeepEqual(want, got) {
+		t.Fatalf("unexpected upload rate:\n- want: %v\n-  got: %v",
+			want, got)
+	}
+}
+
 func testClient(t *testing.T, method string, args []string, out interface{}) (*Client, func()) {
 	s := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		var xr xmlrpcRequest

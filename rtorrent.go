@@ -40,23 +40,23 @@ func (c *Client) Close() error {
 // DownloadTotal retrieves the total number of downloaded bytes since
 // rTorrent startup.
 func (c *Client) DownloadTotal() (int, error) {
-	return c.getInt("get_down_total")
+	return c.getInt("get_down_total", "")
 }
 
 // UploadTotal retrieves the total number of uploaded bytes since
 // rTorrent startup.
 func (c *Client) UploadTotal() (int, error) {
-	return c.getInt("get_up_total")
+	return c.getInt("get_up_total", "")
 }
 
 // DownloadRate retrieves the current download rate in bytes from rTorrent.
 func (c *Client) DownloadRate() (int, error) {
-	return c.getInt("get_down_rate")
+	return c.getInt("get_down_rate", "")
 }
 
 // UploadRate retrieves the current upload rate in bytes from rTorrent.
 func (c *Client) UploadRate() (int, error) {
-	return c.getInt("get_up_rate")
+	return c.getInt("get_up_rate", "")
 }
 
 const (
@@ -114,10 +114,27 @@ func (s *DownloadService) Active() ([]string, error) {
 	return s.c.getStringSlice(downloadList, "active")
 }
 
+// DownloadRate retrieves the current download rate in bytes for a specific
+// download, by its info-hash.
+func (s *DownloadService) DownloadRate(infoHash string) (int, error) {
+	return s.c.getInt("d.get_down_rate", infoHash)
+}
+
+// UploadRate retrieves the current upload rate in bytes for a specific
+// download, by its info-hash.
+func (s *DownloadService) UploadRate(infoHash string) (int, error) {
+	return s.c.getInt("d.get_up_rate", infoHash)
+}
+
 // getInt retrieves an integer value from the specified XML-RPC method.
-func (c *Client) getInt(method string) (int, error) {
+func (c *Client) getInt(method string, arg string) (int, error) {
+	var send interface{}
+	if arg != "" {
+		send = arg
+	}
+
 	var v int
-	err := c.xrc.Call(method, nil, &v)
+	err := c.xrc.Call(method, send, &v)
 	return v, err
 }
 
