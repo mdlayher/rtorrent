@@ -2,6 +2,7 @@ package rtorrent
 
 import "net"
 import "net/url"
+import "strings"
 
 const (
 	// downloadList is used in methods which retrieve a list of downloads.
@@ -75,7 +76,13 @@ func (s *DownloadService) TrackerDomain(infoHash string) (string, error) {
 	if err != nil {
 		return u, err
 	}
-	host, _, _ := net.SplitHostPort(parts.Host)
+	host := parts.Host
+	if strings.Contains(host, ":") {
+		h, _, err := net.SplitHostPort(parts.Host)
+		if err == nil {
+			host = h
+		}
+	}
 	return host, err
 }
 
