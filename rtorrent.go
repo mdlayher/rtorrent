@@ -83,6 +83,18 @@ func (c *Client) getString(method string, arg string) (string, error) {
 	return v, err
 }
 
+// getStringAtIndex retrieves a string value from a specified index for the
+// specified XML-RPC method.
+func (c *Client) getStringAtIndex(method string, arg string, index int) (string, error) {
+	var send []interface{}
+	send = append(send, arg)
+	send = append(send, index)
+
+	var v string
+	err := c.xrc.Call(method, send, &v)
+	return v, err
+}
+
 // getStringSlice retrieves a slice of string values from the specified
 // XML-RPC method.
 func (c *Client) getStringSlice(method string, args ...string) ([]string, error) {

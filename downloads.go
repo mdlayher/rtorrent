@@ -1,5 +1,8 @@
 package rtorrent
 
+import "net"
+import "net/url"
+
 const (
 	// downloadList is used in methods which retrieve a list of downloads.
 	downloadList = "download_list"
@@ -61,14 +64,41 @@ func (s *DownloadService) BaseFilename(infoHash string) (string, error) {
 	return s.c.getString("d.get_base_filename", infoHash)
 }
 
+// TrackerDomain retrieves the domain name of the first tracker for a specific
+// download, by its info-hash.
+func (s *DownloadService) TrackerDomain(infoHash string) (string, error) {
+	u, err := s.c.getStringAtIndex("t.get_url", infoHash, 0)
+	if err != nil {
+		return u, err
+	}
+	parts, err := url.Parse(u)
+	if err != nil {
+		return u, err
+	}
+	host, _, _ := net.SplitHostPort(parts.Host)
+	return host, err
+}
+
 // DownloadRate retrieves the current download rate in bytes for a specific
 // download, by its info-hash.
 func (s *DownloadService) DownloadRate(infoHash string) (int, error) {
 	return s.c.getInt("d.get_down_rate", infoHash)
 }
 
+// DownloadTotal retrieves the current download total in bytes for a specific
+// download, by its info-hash.
+func (s *DownloadService) DownloadTotal(infoHash string) (int, error) {
+	return s.c.getInt("d.get_down_total", infoHash)
+}
+
 // UploadRate retrieves the current upload rate in bytes for a specific
 // download, by its info-hash.
 func (s *DownloadService) UploadRate(infoHash string) (int, error) {
 	return s.c.getInt("d.get_up_rate", infoHash)
+}
+
+// UploadTotal retrieves the current upload total in bytes for a specific
+// download, by its info-hash.
+func (s *DownloadService) UploadTotal(infoHash string) (int, error) {
+	return s.c.getInt("d.get_up_total", infoHash)
 }
