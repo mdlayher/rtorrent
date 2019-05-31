@@ -40,23 +40,23 @@ func (c *Client) Close() error {
 // DownloadTotal retrieves the total number of downloaded bytes since
 // rTorrent startup.
 func (c *Client) DownloadTotal() (int, error) {
-	return c.getInt("get_down_total", "")
+	return c.getInt("down.total", "")
 }
 
 // UploadTotal retrieves the total number of uploaded bytes since
 // rTorrent startup.
 func (c *Client) UploadTotal() (int, error) {
-	return c.getInt("get_up_total", "")
+	return c.getInt("up.total", "")
 }
 
 // DownloadRate retrieves the current download rate in bytes from rTorrent.
 func (c *Client) DownloadRate() (int, error) {
-	return c.getInt("get_down_rate", "")
+	return c.getInt("down.rate", "")
 }
 
 // UploadRate retrieves the current upload rate in bytes from rTorrent.
 func (c *Client) UploadRate() (int, error) {
-	return c.getInt("get_up_rate", "")
+	return c.getInt("up.rate", "")
 }
 
 // getInt retrieves an integer value from the specified XML-RPC method.

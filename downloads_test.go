@@ -184,7 +184,7 @@ func TestClientDownloadsBaseFilename(t *testing.T) {
 	wantName := "foobar"
 	wantHash := strings.Repeat("A", 40)
 
-	c, done := testClient(t, "d.get_base_filename", []string{wantHash}, wantName)
+	c, done := testClient(t, "d.base_filename", []string{wantHash}, wantName)
 	defer done()
 
 	name, err := c.Downloads.BaseFilename(wantHash)
@@ -202,7 +202,7 @@ func TestClientDownloadsDownloadRate(t *testing.T) {
 	wantRate := 1024
 	wantHash := strings.Repeat("A", 40)
 
-	c, done := testClient(t, "d.get_down_rate", []string{wantHash}, wantRate)
+	c, done := testClient(t, "d.down.rate", []string{wantHash}, wantRate)
 	defer done()
 
 	rate, err := c.Downloads.DownloadRate(wantHash)
@@ -220,7 +220,7 @@ func TestClientDownloadsUploadRate(t *testing.T) {
 	wantRate := 1024
 	wantHash := strings.Repeat("A", 40)
 
-	c, done := testClient(t, "d.get_up_rate", []string{wantHash}, wantRate)
+	c, done := testClient(t, "d.up.rate", []string{wantHash}, wantRate)
 	defer done()
 
 	rate, err := c.Downloads.UploadRate(wantHash)
