@@ -58,17 +58,17 @@ func (s *DownloadService) Active() ([]string, error) {
 // BaseFilename retrieves the base filename shown in the rTorrent UI for a
 // specific download, by its info-hash.
 func (s *DownloadService) BaseFilename(infoHash string) (string, error) {
-	return s.c.getString("d.get_base_filename", infoHash)
+	return s.c.getString("d.base_filename", infoHash)
 }
 
 // DownloadRate retrieves the current download rate in bytes for a specific
 // download, by its info-hash.
 func (s *DownloadService) DownloadRate(infoHash string) (int, error) {
-	return s.c.getInt("d.get_down_rate", infoHash)
+	return s.c.getInt("d.down.rate", infoHash)
 }
 
 // UploadRate retrieves the current upload rate in bytes for a specific
 // download, by its info-hash.
 func (s *DownloadService) UploadRate(infoHash string) (int, error) {
-	return s.c.getInt("d.get_up_rate", infoHash)
+	return s.c.getInt("d.up.rate", infoHash)
 }

@@ -13,7 +13,7 @@ import (
 func TestClientDownloadTotal(t *testing.T) {
 	wantTotal := 1024
 
-	c, done := testClient(t, "get_down_total", nil, wantTotal)
+	c, done := testClient(t, "down.total", nil, wantTotal)
 	defer done()
 
 	total, err := c.DownloadTotal()
@@ -30,7 +30,7 @@ func TestClientDownloadTotal(t *testing.T) {
 func TestClientUploadTotal(t *testing.T) {
 	wantTotal := 1024
 
-	c, done := testClient(t, "get_up_total", nil, wantTotal)
+	c, done := testClient(t, "up.total", nil, wantTotal)
 	defer done()
 
 	total, err := c.UploadTotal()
@@ -47,7 +47,7 @@ func TestClientUploadTotal(t *testing.T) {
 func TestClientDownloadRate(t *testing.T) {
 	wantRate := 1024
 
-	c, done := testClient(t, "get_down_rate", nil, wantRate)
+	c, done := testClient(t, "down.rate", nil, wantRate)
 	defer done()
 
 	rate, err := c.DownloadRate()
@@ -64,7 +64,7 @@ func TestClientDownloadRate(t *testing.T) {
 func TestClientUploadRate(t *testing.T) {
 	wantRate := 1024
 
-	c, done := testClient(t, "get_up_rate", nil, wantRate)
+	c, done := testClient(t, "up.rate", nil, wantRate)
 	defer done()
 
 	rate, err := c.UploadRate()
