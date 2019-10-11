@@ -67,8 +67,20 @@ func (s *DownloadService) DownloadRate(infoHash string) (int, error) {
 	return s.c.getInt("d.down.rate", infoHash)
 }
 
+// DownloadTotal retrieves the total bytes downloaded for a specific download,
+// by its info-hash.
+func (s *DownloadService) DownloadTotal(infoHash string) (int, error) {
+	return s.c.getInt("d.down.total", infoHash)
+}
+
 // UploadRate retrieves the current upload rate in bytes for a specific
 // download, by its info-hash.
 func (s *DownloadService) UploadRate(infoHash string) (int, error) {
 	return s.c.getInt("d.up.rate", infoHash)
+}
+
+// UploadTotal retrieves the total bytes uploaded for a specific download, by
+// its info-hash.
+func (s *DownloadService) UploadTotal(infoHash string) (int, error) {
+	return s.c.getInt("d.up.total", infoHash)
 }

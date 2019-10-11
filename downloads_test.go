@@ -216,6 +216,24 @@ func TestClientDownloadsDownloadRate(t *testing.T) {
 	}
 }
 
+func TestClientDownloadsDownloadTotal(t *testing.T) {
+	wantTotal := 1024
+	wantHash := strings.Repeat("A", 40)
+
+	c, done := testClient(t, "d.down.total", []string{wantHash}, wantTotal)
+	defer done()
+
+	total, err := c.Downloads.DownloadTotal(wantHash)
+	if err != nil {
+		t.Fatalf("failed call to Client.Downloads.DownloadTotal: %v", err)
+	}
+
+	if want, got := wantTotal, total; !reflect.DeepEqual(want, got) {
+		t.Fatalf("unexpected download total:\n- want: %v\n-  got: %v",
+			want, got)
+	}
+}
+
 func TestClientDownloadsUploadRate(t *testing.T) {
 	wantRate := 1024
 	wantHash := strings.Repeat("A", 40)
@@ -230,6 +248,24 @@ func TestClientDownloadsUploadRate(t *testing.T) {
 
 	if want, got := wantRate, rate; !reflect.DeepEqual(want, got) {
 		t.Fatalf("unexpected upload rate:\n- want: %v\n-  got: %v",
+			want, got)
+	}
+}
+
+func TestClientDownloadsUploadTotal(t *testing.T) {
+	wantTotal := 1024
+	wantHash := strings.Repeat("A", 40)
+
+	c, done := testClient(t, "d.up.total", []string{wantHash}, wantTotal)
+	defer done()
+
+	total, err := c.Downloads.UploadTotal(wantHash)
+	if err != nil {
+		t.Fatalf("failed call to Client.Downloads.UploadTotal: %v", err)
+	}
+
+	if want, got := wantTotal, total; !reflect.DeepEqual(want, got) {
+		t.Fatalf("unexpected upload total:\n- want: %v\n-  got: %v",
 			want, got)
 	}
 }
